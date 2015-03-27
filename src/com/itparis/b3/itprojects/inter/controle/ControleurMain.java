@@ -2,6 +2,7 @@ package com.itparis.b3.itprojects.inter.controle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
@@ -69,7 +70,7 @@ public class ControleurMain extends HttpServlet {
                 forward = getbulletin(request);
             }
             
-            //0TraceManager.logInfo("Appel de la vue : " + forward);
+            //TraceManager.logInfo("Appel de la vue : " + forward);
             RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
             dispatcher.forward(request, response);
 
@@ -90,7 +91,12 @@ public class ControleurMain extends HttpServlet {
         String pass = request.getParameter("pass");
         //création de la dao
         SessionDAO service = new SessionDAO();
-        Session user = service.verifLoginPass(login, pass);
+        Session user = null;
+        try{
+        	user = service.getSessionsByLoginEtMdp(login, pass).get(0);
+        }catch (SQLException e){
+        	System.out.println(e);
+        }
         //Traitement
         if (user != null) {
             forward = "Accueil.jsp";
