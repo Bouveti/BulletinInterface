@@ -69,6 +69,9 @@ public class ControleurMain extends HttpServlet {
             else if (idaction.equals("getbulletin")) {
                 forward = getbulletin(request);
             }
+            else if (idaction.equals("detailmodule")) {
+                forward = getdetailmodule(request);
+            }
             
             //TraceManager.logInfo("Appel de la vue : " + forward);
             RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
@@ -79,7 +82,18 @@ public class ControleurMain extends HttpServlet {
         }
 
     }
-    private String getbulletin(HttpServletRequest request) {
+    private String getdetailmodule(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+    	//récupérer paramètre de la requete
+    	String id = request.getParameter("idmodule");
+    	//requete
+    	//recupération résultat
+    	//envoi vers JSP
+    	
+		return null;
+	}
+
+	private String getbulletin(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -91,12 +105,7 @@ public class ControleurMain extends HttpServlet {
         String pass = request.getParameter("pass");
         //création de la dao
         SessionDAO service = new SessionDAO();
-        Session user = null;
-        try{
-        	user = service.getSessionsByLoginEtMdp(login, pass).get(0);
-        }catch (SQLException e){
-        	System.out.println(e);
-        }
+        Session user = service.vesrifLoginPass(login, pass);
         //Traitement
         if (user != null) {
             forward = "Accueil.jsp";
